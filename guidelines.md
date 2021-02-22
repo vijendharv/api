@@ -572,7 +572,7 @@ Pagination leverages the [Hypermedia as the Engine of Application State](#hyperm
 
 #### <a name="data-reserved-keys"></a>Reserved Key Names
 
-The following key names are important across all domains at Concur. They can be used in data only within the context of the service defining the key name.
+The following key names are important across all domains. They can be used in data only within the context of the service defining the key name.
 
 Name | Type | Format | Description
 -----|------|--------|------------
