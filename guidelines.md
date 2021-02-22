@@ -7,7 +7,7 @@
 	* [Security Architecture Review Board](#security)
 	* [API Gateway (Reverse Proxy)](#api-gateway)
 	* [Headers](#headers)
-		* [Correlation Identifier Custom Header](#header-concur-correlationid)
+		* [Correlation Identifier Custom Header](#header-correlationid)
 		* [Content-Type](#header-content-type)
 		* [Accept](#header-accept)
 		* [Accept-Language](#header-accept-language)
