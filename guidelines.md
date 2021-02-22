@@ -1,4 +1,4 @@
-# Concur API Guidelines
+# API Guidelines
 
 * [Guidelines](#guidelines)
 	* [Transport Level Security (TLS)](#tls)
@@ -7,7 +7,7 @@
 	* [Security Architecture Review Board](#security)
 	* [API Gateway (Reverse Proxy)](#api-gateway)
 	* [Headers](#headers)
-		* [Concur Correlation Identifier Custom Header](#header-concur-correlationid)
+		* [Correlation Identifier Custom Header](#header-concur-correlationid)
 		* [Content-Type](#header-content-type)
 		* [Accept](#header-accept)
 		* [Accept-Language](#header-accept-language)
