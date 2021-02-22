@@ -64,8 +64,6 @@
 
 ### <a name="authorization"></a>Authorization
 
-> For more information on the OAuth2 service see [https://github.concur.com/core/oauth2/wiki](https://github.concur.com/core/oauth2/wiki).
-
 * Services SHOULD make use of X.509 client certificates for service-to-service (internal) authorization.
 * Services SHOULD leverage the access token (in the form of a [RFC 7519 JSON Web Token (JWT)](#RFC-7519)) for user oriented authorization and / or external access to APIs.
 * Services SHOULD use data contained in an access token only for authorization and for no other purpose. For more information see [Using JSON Web Token (JWT) access token for purposes other than authorization](./using-jwt-for-purposes-other-than-authorization.md).
@@ -73,54 +71,42 @@
 #### Comparison of Authorization and Authentication
 
 * Authorization (AuthZ) is "the function of specifying access rights to resources related to information security and computer security in general and to access control in particular. More formally, 'to authorize' is to define an access policy." (Source: [Wikipedia](https://en.wikipedia.org/wiki/Authorization))
-* Authentication (AuthN) is "the act of confirming the truth of an attribute of a single piece of data (a datum) claimed true by an entity." (Source: [Wikipedia](https://en.wikipedia.org/wiki/Authentication)). For API usage at Concur this most often occurs with a user login, basic (username + password) or single sign on (SSO).
+* Authentication (AuthN) is "the act of confirming the truth of an attribute of a single piece of data (a datum) claimed true by an entity." (Source: [Wikipedia](https://en.wikipedia.org/wiki/Authentication)). 
+* 
 * Authorization and authentication are usually tightly coupled (referred to as AuthX); Client code typically enters the [RFC 6749 OAuth 2.0 Authorization Framework](#RFC-6749) authorization process which in turn authenticates the user. In API usage it is rare for client code to perform the authentication directly.
 
 #### API Gateway and Authorization
-
-> * For a video on AuthX and the API Gateway see [https://concur.circlehd.com/play/rkMIU1yU-Concur-749_023-Auth-Overview-Video-1](https://concur.circlehd.com/play/rkMIU1yU-Concur-749_023-Auth-Overview-Video-1).
-> * For specific information on AuthX and the API Gateway see [http://developer.concurasp.com/apigateway/apigw_auth.html](http://developer.concurasp.com/apigateway/apigw_auth.html).
-> * For specific information on the API Gateway custom headers see [http://developer.concurasp.com/apigateway/apigw_usage.html#gateway-headers](http://developer.concurasp.com/apigateway/apigw_usage.html#gateway-headers)
 
 The API Gateway does authentication for services and provides authorization context. At a very high level the API Gateway validates both access tokens (which are in the form of JWTs) and X.509 certificates. Services are still responsible for inspecting the authorization context in access tokens (via claims in the JWT) and / or information about the callers X.509 certificates passed in API Gateway custom headers.
 
 This subject is very deep so teams are encouraged to follow the links above to learn more.
 
-### <a name="security"></a>Security Architecture Review Board aka SARB
-
-The purpose of the SARB is to review projects and significant material changes to SAP Concur Global IT infrastructure and Applications. To ensure that your service is compliant with SAP Concur's security and privacy controls, please engage the [Security Architecture Review Board](https://wiki.concur.com/confluence/display/SEC/Security+Architecture+Review+Board). The SARB is a part of the [SAP Concur Delivery Framework](https://wiki.concur.com/confluence/display/SDLC/SAP+Concur+Delivery+Framework).
-
-For more information contact the Security Team at the [Security Architecture Review Board DL](mailto:DL_05B049A106C04F72BC8DA0C76FEB8053@sap.com) or in #ask-sarb.
-
-
 ### <a name="api-gateway"></a>API Gateway (Reverse Proxy)
 
-> For more information on the API Gateway see [https://github.concur.com/core/api-gateway/wiki](https://github.concur.com/core/api-gateway/wiki).
-
-* Services SHOULD make themselves available for public consumption through the [Concur API Gateway](https://github.concur.com/core/api-gateway/wiki).
+* Services SHOULD make themselves available for public consumption through the API Gateway
 
 ### <a name="headers"></a>Headers
 
 * Services SHOULD limit themselves to standards based HTTP headers as defined in the [Internet Assigned Numbers Authority (IANA) Message Headers](http://www.iana.org/assignments/message-headers/message-headers.xhtml) (Protocol=HTTP, Status=Standard)
-* Services SHOULD limit themselves to custom headers as defined for usage by the whole of Concur in this document.
+* Services SHOULD limit themselves to custom headers as defined for usage by the whole of company in this document.
 
-#### <a name="header-concur-correlationid"></a>Concur Correlation Identifier Custom Header
+#### <a name="header-concur-correlationid"></a>Correlation Identifier Custom Header
 
-The Concur Correlation Identifier (`concur-correlationid`) in the form of a [RFC 4122 Universally Unique IDentifier (UUID)](#RFC-4122) UUID4 value is a custom header designed to aid in workflow tracking and troubleshooting for both client and server code.
+The Correlation Identifier (`correlationid`) in the form of a [RFC 4122 Universally Unique IDentifier (UUID)](#RFC-4122) UUID4 value is a custom header designed to aid in workflow tracking and troubleshooting for both client and server code.
 
 * Services SHOULD generate when not present in a request.
-* Services SHOULD be careful to pay attention to incoming `concur-correlationid` values and pass them along, otherwise the service will risk masking bugs or making it more difficult to troubleshoot.
+* Services SHOULD be careful to pay attention to incoming `correlationid` values and pass them along, otherwise the service will risk masking bugs or making it more difficult to troubleshoot.
 * Services SHOULD include in all requests and responses.
 * Services SHOULD store in their data (including logs).
 * Services SHOULD NOT document externally as a request header for any API calls by client code.
 * Services SHOULD document as a response header.
 
-##### <a name="header-concur-correlationid"></a>Lifecycle
+##### <a name="header-correlationid"></a>Lifecycle
 
-* The `concur-correlationid` is designed to trace each single API call to a single starting endpoint and the resulting routing throughout the entire system.
+* The `correlationid` is designed to trace each single API call to a single starting endpoint and the resulting routing throughout the entire system.
 
 ```
-concur-correlationid: "abc-123"
+correlationid: "abc-123"
 
 --> Request
 <-- Response
@@ -375,15 +361,6 @@ The fragment identifier should be separated from the rest of the URI prior to a 
 
 For example, use of a fragment identifier with `cUrl` shows the tool removes the fragment prior to sending the request to the server.
 
-```
-curl -v https://developer.concur.com/api-reference/receipts/get-started.html#overview <-- fragment present
-
-> GET /api-reference/receipts/get-started.html <-- fragment removed by tool
-> Host: developer.concur.com
-> User-Agent: curl/7.54.0
-> Accept: */*
-```
-
 #### <a name="resource-naming-syntax"></a>Resource Naming Syntax
 
 Building upon everything in this section the following illustrates how teams should think of URIs when naming resources:
@@ -503,8 +480,6 @@ Contents of https://example.com/stores/v1/abc:
 
 ### <a name="custom-data"></a>Custom Data
 
-> An ongoing investigation and design effort can be found at https://github.concur.com/developer/schema.
-
 * Services SHOULD NOT use ambiguous key names such as `custom1`.
 * Services SHOULD use a [RFC 3986 Uniform Resource Identifier (URI)](#RFC-3986) to disambiguate data and avoid name collisions.
 
@@ -601,8 +576,8 @@ The following key names are important across all domains at Concur. They can be 
 
 Name | Type | Format | Description
 -----|------|--------|------------
-`userId`|`string`|[`UUID4`](#RFC-4122)|A user within the Concur system: [User Identification](#data-user-identification)
-`companyId`|`string`|[`UUID4`](#RFC-4122)|A company within the Concur system: [Company Identification](#data-company-identification)
+`userId`|`string`|[`UUID4`](#RFC-4122)|A user within the system: [User Identification](#data-user-identification)
+`companyId`|`string`|[`UUID4`](#RFC-4122)|A company within the  system: [Company Identification](#data-company-identification)
 
 #### <a name="data-identifiers"></a>Identifiers
 
@@ -612,8 +587,6 @@ Name | Type | Format | Description
 	* This value SHOULD be separate from database key values (i.e., primary key) to avoid leaking implementation details.
 * Services SHOULD provide a URI as the identifier (including the UUID4 value stored in `id`) for the resource in a key named `href`.
 	* The key name `href` is based on the [HTML5 concept of links](https://www.w3.org/TR/html5/links.html), [RFC 5988 Web Linking Appendix A Notes on Using the Link Header with the HTML4 Format](https://tools.ietf.org/html/rfc5988#appendix-A) and is consistent with other sections of the guidelines where hyperlinks are provided using the Hypermedia as the Engine of Application State [Operations Schema](#hypermedia-operations-operation) such as [Related Data](#related-data), [Service Index](#index) and [Pagination](#pagination).
-* Services SHOULD provide a [RFC 6570 URI Template](#RFC-6570) in a key named `template`.
-	* The combination of `template` + `id` = `href` allows legacy relational database systems at Concur the flexibility to store URI values minimally to avoid database bloat (mainly due to indexing) and therefore storage costs.
 * `href`, `id` and `template` SHOULD be considered reserved keywords.
   * `href` and `id` SHOULD only be used in the root of a representation document.
   * `template` SHOULD be used as a key name only when the value is a URI template.
@@ -631,8 +604,6 @@ Name | Type | Format | Description
 
 #### <a name="data-user-identification"></a>User Identification
 
-> For more information on the Profile service see [https://github.concur.com/core/profile/wiki](https://github.concur.com/core/profile/wiki).
-
 * Services SHOULD store the user identifier with `userId` as the key name and the [RFC 4122 Universally Unique IDentifier (UUID)](#RFC-4122) UUID4 value as provided by the Profile service.
 
 ```json
@@ -643,9 +614,6 @@ Name | Type | Format | Description
 
 #### <a name="data-company-identification"></a>Company Identification
 
-> For more information on the Profile service see [https://github.concur.com/core/profile/wiki](https://github.concur.com/core/profile/wiki).
-
-* Services SHOULD NOT store the legacy `outtask.companyId` (travel) nor the `expense.entityId` (expense) as these are internal database keys.
 * Services SHOULD store the company identifier with `companyId` as the key name and the [RFC 4122 Universally Unique IDentifier (UUID)](#RFC-4122) UUID4 value as provided by the company service.
 
 ```json
@@ -667,7 +635,7 @@ Name | Type | Format | Description
 
 #### <a name="data-date-time"></a>Dates and Times
 
-> Because the Concur business involves many partnerships and resource models outside of direct influence (especially within travel systems) there are times when incoming values look like a timestamp but because of the business domain it is treated differently than a traditional date or timestamp. An example of this is a time associated with a travel itinerary which, to be fully understood, must contain additional data like an IATA code.
+> Because the business involves many partnerships and resource models outside of direct influence (especially within travel systems) there are times when incoming values look like a timestamp but because of the business domain it is treated differently than a traditional date or timestamp. An example of this is a time associated with a travel itinerary which, to be fully understood, must contain additional data like an IATA code.
 
 * Services SHOULD choose from the following formats to accept and represent dates and timestamps:
   * [RFC 3339 Date and Time on the Internet: Timestamps](#RFC-3339): `YYYY-MM-DDThh:mm:ss.nnn-hh:mmZ`
@@ -979,7 +947,6 @@ Links to claims within the RFC:
 
 #### Additional Resources
 
-* [JWT Summary (Concur)](./jwt-summary.md)
 * [https://jwt.io](https://jwt.io)
 * [Public Claim Names](http://www.iana.org/assignments/jwt/jwt.txt)
 
