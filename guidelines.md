@@ -90,7 +90,7 @@ This subject is very deep so teams are encouraged to follow the links above to l
 * Services SHOULD limit themselves to standards based HTTP headers as defined in the [Internet Assigned Numbers Authority (IANA) Message Headers](http://www.iana.org/assignments/message-headers/message-headers.xhtml) (Protocol=HTTP, Status=Standard)
 * Services SHOULD limit themselves to custom headers as defined for usage by the whole of company in this document.
 
-#### <a name="header-concur-correlationid"></a>Correlation Identifier Custom Header
+#### <a name="header-correlationid"></a>Correlation Identifier Custom Header
 
 The Correlation Identifier (`correlationid`) in the form of a [RFC 4122 Universally Unique IDentifier (UUID)](#RFC-4122) UUID4 value is a custom header designed to aid in workflow tracking and troubleshooting for both client and server code.
 
@@ -842,11 +842,6 @@ Date: Tue, 19 Jul 2016 18:23:16 GMT
 
 * Adding keys to data is generally not considered a breaking change.
 
-### <a name="documentation"></a>Documentation
-
-Please refer to the [API Documentation Requirements](https://github.concur.com/developer/documentation) repo for information. 
-
-
 ## <a name="works-cited"></a>Works Cited
 
 ### <a name="rest"></a>Representational State Transfer (REST) Dissertation by Roy Fielding, 2000
@@ -993,10 +988,6 @@ Links to claims within the RFC:
 
 * Online Browsing Platform: [https://www.iso.org/obp/ui/#search/code/](https://www.iso.org/obp/ui/#search/code/)
 * [http://www.iso.org/iso/home/standards/country_codes.htm](http://www.iso.org/iso/home/standards/country_codes.htm)
-
-### <a name="ISO-4217"></a>ISO 4217:2015 Codes for the representation of currencies
-
-* [ISO 4217:2015 Codes for the representation of currencies](https://github.concur.com/developer/api/tree/main/standards/ISO_4217_2015_en.PDF)
 
 ### <a name="ISO-8601"></a>ISO 8601:2004 Data elements and interchange formats -- Information interchange -- Representation of dates and times
 
